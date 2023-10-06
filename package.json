@@ -21,6 +21,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "framer-motion": "^4.1.17",
+    "lottie-react": "^2.4.0",
     "react": "17.0.2",
     "react-apexcharts": "1.4.0",
     "react-calendar": "^3.7.0",
@@ -67,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "gh-pages": "^3.2.3"
   }
 }
