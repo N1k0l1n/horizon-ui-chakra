@@ -1,6 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 import Lottie from "lottie-react";
-import Logo from "../../assets/img/logoAnime.json";
+import Logo from "../../assets/img/logoAni2.json";
 
 
 export const AdobexdLogo = createIcon({
@@ -463,7 +463,7 @@ export const SpotifyLogo = createIcon({
 });
 
 export const CompanyLogo = () => (
-  <Lottie animationData={Logo} alt="logo" />
+  <Lottie animationData={Logo} alt="logo" width={50} height={50}/>
 );
 
 export const SupportIcon = createIcon({
