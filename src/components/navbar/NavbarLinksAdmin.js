@@ -16,6 +16,7 @@ import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 // Assets
 import { MdNotificationsNone } from 'react-icons/md';
@@ -27,8 +28,12 @@ import { logOut } from "../../features/auth/authSlice";
 
 
 export default function HeaderLinks(props) {
+
 	const history = useHistory();
 	const { secondary } = props;
+	const username = useSelector(state => state.auth.user);
+	console.log(username);
+
 	// Chakra Color Mode
 	const navbarIcon = useColorModeValue('gray.400', 'white');
 	let menuBg = useColorModeValue('white', 'navy.800');
@@ -127,7 +132,7 @@ export default function HeaderLinks(props) {
 					<Avatar
 						_hover={{ cursor: 'pointer' }}
 						color="white"
-						name="Adela Parkson"
+						name= {username}
 						bg="#11047A"
 						size="sm"
 						w="40px"
@@ -146,7 +151,7 @@ export default function HeaderLinks(props) {
 							fontSize="sm"
 							fontWeight="700"
 							color={textColor}>
-							👋&nbsp; Hey, Adela
+							👋&nbsp; Hey, {username}
 						</Text>
 					</Flex>
 					<Flex flexDirection="column" p="10px">
