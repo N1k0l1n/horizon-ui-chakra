@@ -1,33 +1,9 @@
-/* eslint-disable */
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 import React, { useRef, useState, useEffect } from "react";
-//Redux imports
+// Redux imports
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../features/auth/authSlice";
 import { useLoginMutation } from "../../../features/auth/authApiSlice";
-
 import { NavLink } from "react-router-dom";
 // Chakra imports
 import {
@@ -47,11 +23,9 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-
 // Custom components
 import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
-
 // Assets
 import imageBG from "assets/img/iKanbi/ikanbiBG.png";
 import { FcGoogle } from "react-icons/fc";
@@ -75,12 +49,12 @@ function SignIn() {
     { bg: "secondaryGray.300" },
     { bg: "whiteAlpha.200" }
   );
+
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
-  //Login Logic
+  // Login Logic
   const userRef = useRef();
-  const errRef = useRef();
   const [username, setUsername] = useState("");
   const [password, SetPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -97,6 +71,14 @@ function SignIn() {
     setErrMsg("");
   }, [username, password]);
 
+  const handleUserInput = (e) => setUsername(e.target.value);
+
+  const handlePwdInput = (e) => SetPassword(e.target.value);
+
+  const handleLoginError = (message) => {
+    setErrMsg(message);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -110,44 +92,22 @@ function SignIn() {
       };
 
       localStorage.setItem("authToken", JSON.stringify(tokenObject));
-
-      localStorage.setItem("authToken", JSON.stringify(tokenObject));
       setUsername("");
       SetPassword("");
       history.push("/admin/default");
     } catch (err) {
       if (!err?.originalStatus) {
         // isLoading: true until timeout occurs
-        setErrMsg("No Server Response");
-        <Alert status="success">
-          <AlertIcon />
-          {errMsg}
-        </Alert>;
+        handleLoginError("No Server Response");
       } else if (err.originalStatus === 400) {
-        setErrMsg("Missing Username or Password");
-        <Alert status="success">
-          <AlertIcon />
-          {errMsg}
-        </Alert>;
+        handleLoginError("Missing Username or Password");
       } else if (err.originalStatus === 401) {
-        setErrMsg("Unauthorized");
-        <Alert status="success">
-          <AlertIcon />
-          {errMsg}
-        </Alert>;
+        handleLoginError("Unauthorized");
       } else {
-        setErrMsg("Login Failed");
-        <Alert status="success">
-          <AlertIcon />
-          {errMsg}
-        </Alert>;
+        handleLoginError("Login Failed");
       }
     }
   };
-
-  const handleUserInput = (e) => setUsername(e.target.value);
-
-  const handlePwdInput = (e) => SetPassword(e.target.value);
 
   return (
     <DefaultAuth illustrationBackground={imageBG} image={imageBG}>
@@ -301,6 +261,12 @@ function SignIn() {
                 </Text>
               </NavLink>
             </Flex>
+            {errMsg && (
+              <Alert status="error" mb="24px">
+                <AlertIcon />
+                {errMsg}
+              </Alert>
+            )}
             <Button
               fontSize="sm"
               variant="brand"

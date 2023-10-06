@@ -3,10 +3,7 @@ import React from "react";
 import {
   Flex,
   Link,
-  List,
-  ListItem,
   Text,
-  Button,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -45,7 +42,7 @@ export default function Footer() {
             href='https://www.simmmple.com?ref=horizon-chakra-free'
             target='_blank'
             fontWeight='700'>
-            Simmmple!
+            iKanbi Technologies!
           </Link>
         </Text>
       </Text>
