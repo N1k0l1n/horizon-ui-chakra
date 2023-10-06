@@ -97,10 +97,9 @@ function SignIn() {
       history.push("/admin/default");
     } catch (err) {
       if (!err?.status) {
-        // isLoading: true until timeout occurs
         handleLoginError("No Server Response");
       } else if (err.status === 400) {
-        handleLoginError("Missing Username or Password");
+        handleLoginError("Check Username or Password");
       } else if (err.status === 401) {
         handleLoginError("Unauthorized");
       } else {
