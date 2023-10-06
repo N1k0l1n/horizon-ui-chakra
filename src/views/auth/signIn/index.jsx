@@ -21,10 +21,18 @@
 
 */
 
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
+//Redux imports
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../../features/auth/authSlice";
+import { useLoginMutation } from "../../../features/auth/authApiSlice";
+
 import { NavLink } from "react-router-dom";
 // Chakra imports
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Checkbox,
@@ -39,13 +47,13 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+
 // Custom components
 import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
-// Assets
-import illustration from "assets/img/auth/auth.png";
-import imageBG from "assets/img/iKanbi/ikanbiBG.png";
 
+// Assets
+import imageBG from "assets/img/iKanbi/ikanbiBG.png";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
@@ -69,6 +77,69 @@ function SignIn() {
   );
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+//Login Logic
+const userRef = useRef();
+const errRef = useRef();
+const [username, setUsername] = useState("");
+const [password, SetPassword] = useState("");
+const [errMsg, setErrMsg] = useState("");
+const history = useHistory();
+
+const [login, { isLoading }] = useLoginMutation();
+const dispatch = useDispatch();
+
+useEffect(() => {
+  userRef.current.focus();
+}, []);
+
+useEffect(() => {
+  setErrMsg("");
+}, [username, password]);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const userData = await login({ username, password }).unwrap();
+    dispatch(setCredentials({ ...userData, username }));
+    setUsername("");
+    SetPassword("");
+    history.push("/admin/default");
+  } catch (err) {
+    if (!err?.originalStatus) {
+      // isLoading: true until timeout occurs
+      setErrMsg("No Server Response");
+      <Alert status='success'>
+      <AlertIcon />
+      {errMsg}
+    </Alert>
+    } else if (err.originalStatus === 400) {
+      setErrMsg("Missing Username or Password");
+      <Alert status='success'>
+      <AlertIcon />
+      {errMsg}
+    </Alert>
+    } else if (err.originalStatus === 401) {
+      setErrMsg("Unauthorized");
+      <Alert status='success'>
+      <AlertIcon />
+      {errMsg}
+    </Alert>
+    } else {
+      setErrMsg("Login Failed");
+      <Alert status='success'>
+      <AlertIcon />
+      {errMsg}
+    </Alert>
+    }
+  }
+};
+
+const handleUserInput = (e) => setUsername(e.target.value);
+
+const handlePwdInput = (e) => SetPassword(e.target.value);
+
   return (
     <DefaultAuth illustrationBackground={imageBG} image={imageBG}>
       <Flex
@@ -129,7 +200,7 @@ function SignIn() {
             </Text>
             <HSeparator />
           </Flex>
-          <FormControl>
+          <FormControl >
             <FormLabel
               display='flex'
               ms='4px'
@@ -137,15 +208,20 @@ function SignIn() {
               fontWeight='500'
               color={textColor}
               mb='8px'>
-              Email<Text color={brandStars}>*</Text>
+              Username<Text color={brandStars}>*</Text>
             </FormLabel>
             <Input
               isRequired={true}
+              id="username"
+              ref={userRef}
+              value={username}
+              onChange={handleUserInput}
+              autoComplete="off"
               variant='auth'
               fontSize='sm'
               ms={{ base: "0px", md: "0px" }}
-              type='email'
-              placeholder='mail@example.com'
+              type="text"
+              placeholder='Username'
               mb='24px'
               fontWeight='500'
               size='lg'
@@ -156,7 +232,9 @@ function SignIn() {
               fontWeight='500'
               color={textColor}
               display='flex'>
-              Password<Text color={brandStars}>*</Text>
+
+                Password
+              <Text color={brandStars}>*</Text>
             </FormLabel>
             <InputGroup size='md'>
               <Input
@@ -167,6 +245,10 @@ function SignIn() {
                 size='lg'
                 type={show ? "text" : "password"}
                 variant='auth'
+                id="password"
+                onChange={handlePwdInput}
+                value={password}
+                required
               />
               <InputRightElement display='flex' alignItems='center' mt='4px'>
                 <Icon
@@ -209,7 +291,9 @@ function SignIn() {
               fontWeight='500'
               w='100%'
               h='50'
-              mb='24px'>
+              mb='24px'
+              onClick={handleSubmit} // Attach the click handler
+              >
               Sign In
             </Button>
           </FormControl>

@@ -22,6 +22,8 @@ import { MdNotificationsNone } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes.js';
 import { ThemeEditor } from './ThemeEditor';
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/auth/authSlice";
 
 
 export default function HeaderLinks(props) {
@@ -41,10 +43,15 @@ export default function HeaderLinks(props) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
 
+
+	//Logout
+	const dispatch = useDispatch();
+
 	const handleLogout = () => {
+		dispatch(logOut());
 		localStorage.clear();
 		sessionStorage.clear();
-		history.push('/sign-in'); 
+		history.push('/auth/sign-in'); 
 	  };
 	
 	
