@@ -5,7 +5,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const baseQuery = fetchBaseQuery({
   //backend url
-  baseUrl: 'https://localhost:7153',
+  baseUrl: 'https://localhost:7191/api',
   //This will send back our http only secure cookie
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
