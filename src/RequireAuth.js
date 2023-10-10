@@ -6,9 +6,13 @@ import Lottie from "lottie-react";
 import Loader from "./assets/img/iKanbi/Loader.json";
 
 const loaderStyles = {
-  width: "400", // Adjust the width to make it smaller
-  height: "400px", // Adjust the height to make it smaller
-  margin: "auto", // Center the loader horizontally
+  width: "400px", 
+  height: "400px", 
+  margin: "auto",
+  marginTop: "8rem",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 const RequireAuth = ({ children, ...rest }) => {
