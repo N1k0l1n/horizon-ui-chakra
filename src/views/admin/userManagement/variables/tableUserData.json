@@ -1,0 +1,52 @@
+[
+  {
+    "first name": "Horizon",
+    "last name": "UI PRO",
+    "user name": "Horizon UI PRO",
+    "email": "horizonpro@example.com",
+    "user role": "Admin",
+    "status": "Active",
+    "phone number": "123-456-7890",
+    "address": "123 Main St"
+  },
+  {
+    "first name": "Horizon",
+    "last name": "UI Free",
+    "user name": "Horizon UI Free",
+    "email": "horizonfree@example.com",
+    "user role": "User",
+    "status": "Active",
+    "phone number": "987-654-3210",
+    "address": "456 Elm St"
+  },
+  {
+    "first name": "Weekly",
+    "last name": "Update",
+    "user name": "Weekly Update",
+    "email": "weekly@example.com",
+    "user role": "User",
+    "status": "Inactive",
+    "phone number": "555-123-4567",
+    "address": "789 Oak St"
+  },
+  {
+    "first name": "Venus",
+    "last name": "3D Asset",
+    "user name": "Venus 3D Asset",
+    "email": "venus@example.com",
+    "user role": "User",
+    "status": "Active",
+    "phone number": "111-222-3333",
+    "address": "101 Pine St"
+  },
+  {
+    "first name": "Marketplace",
+    "last name": "App",
+    "user name": "Marketplace",
+    "email": "market@example.com",
+    "user role": "Admin",
+    "status": "Active",
+    "phone number": "777-888-9999",
+    "address": "222 Cedar St"
+  }
+]
