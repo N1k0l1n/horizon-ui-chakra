@@ -6,8 +6,8 @@ import Lottie from "lottie-react";
 import Loader from "./assets/img/iKanbi/Loader.json";
 
 const loaderStyles = {
-  width: "500px", // Adjust the width to make it smaller
-  height: "500px", // Adjust the height to make it smaller
+  width: "400", // Adjust the width to make it smaller
+  height: "400px", // Adjust the height to make it smaller
   margin: "auto", // Center the loader horizontally
 };
 
