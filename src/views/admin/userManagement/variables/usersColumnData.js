@@ -25,4 +25,8 @@ export const usersDataTable = [
     Header: "ADDRESS",
     accessor: "phone number",
   },
+  {
+    Header: "ACTIONS",
+    accessor: "actions",
+  },
 ];
