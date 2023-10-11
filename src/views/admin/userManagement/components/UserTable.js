@@ -24,6 +24,8 @@ import {
   import Card from "components/card/Card";
   import Menu from "components/menu/MainMenu";
   import Modal from "components/modal/Modal"
+
+  
   export default function CheckTable(props) {
     const { columnsData, tableData } = props;
   

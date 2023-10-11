@@ -10,16 +10,16 @@ import {
   ModalFooter,
   Text,
   Input,
-  Box, // Import Box from Chakra UI
+  Grid,
+  Select,
 } from "@chakra-ui/react";
 
 const OverlayOne = () => (
   <ModalOverlay
     bg="blackAlpha.300"
     backdropFilter="blur(10px) hue-rotate(90deg)"
-    />
-  )
-
+  />
+);
 
 const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
   const [editedUserData, setEditedUserData] = useState(selectedRowData);
@@ -30,15 +30,14 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
   };
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal isCentered isOpen={isOpen} onClose={onClose} size="6xl">
       <OverlayOne />
       <ModalContent>
         <ModalHeader>Edit User</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>Please fill the above Fields</Text>
-          {/* Use Box component for styling */}
-          <Box p="4">
+          <Grid gridTemplateColumns="1fr 1fr" gap="3">
             <Input
               value={selectedRowData?.firstName || ""}
               onChange={(e) =>
@@ -48,8 +47,8 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="FIRST NAME"
-              mb="3"
             />
+
             <Input
               value={selectedRowData?.userName || ""}
               onChange={(e) =>
@@ -59,8 +58,8 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="USER NAME"
-              mb="3"
             />
+
             <Input
               value={selectedRowData?.email || ""}
               onChange={(e) =>
@@ -70,9 +69,9 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="EMAIL"
-              mb="3"
             />
-            <Input
+
+            <Select
               value={selectedRowData?.userRole || ""}
               onChange={(e) =>
                 setEditedUserData({
@@ -80,9 +79,13 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                   userRole: e.target.value,
                 })
               }
-              placeholder="USER ROLE"
-              mb="3"
-            />
+              placeholder="Select option"
+            >
+              <option value="Admin">Admin</option>
+              <option value="Member">Member</option>
+              <option value="Guest">Guest</option>
+            </Select>
+
             <Input
               value={selectedRowData?.status || ""}
               onChange={(e) =>
@@ -92,8 +95,8 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="STATUS"
-              mb="3"
             />
+
             <Input
               value={selectedRowData?.address || ""}
               onChange={(e) =>
@@ -103,9 +106,8 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="ADDRESS"
-              mb="3"
             />
-          </Box>
+          </Grid>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="teal" onClick={handleSave}>
@@ -116,6 +118,6 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
       </ModalContent>
     </Modal>
   );
-}
+};
 
-export default CustomModal
+export default CustomModal;
