@@ -12,7 +12,7 @@ import {
     Button ,
     useColorModeValue,
   } from "@chakra-ui/react";
-  import React, { useMemo } from "react";
+  import React, { useMemo, useState } from "react";
   import {
     useGlobalFilter,
     usePagination,
@@ -23,11 +23,24 @@ import {
   // Custom components
   import Card from "components/card/Card";
   import Menu from "components/menu/MainMenu";
+  import Modal from "components/modal/Modal"
   export default function CheckTable(props) {
     const { columnsData, tableData } = props;
   
     const columns = useMemo(() => columnsData, [columnsData]);
     const data = useMemo(() => tableData, [tableData]);
+
+      // Define modal state
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+
+
+  //Open modal
+  const openEditModal = (rowData) => {
+    setSelectedRowData(rowData);
+    setEditModalOpen(true);
+  };
+
   
     const tableInstance = useTable(
       {
@@ -156,7 +169,11 @@ import {
                   if (cell.column.Header === "ACTIONS") {
                     data = (
                       <Flex align='center'>
-                        <Button colorScheme='teal' mr='2'>
+                        <Button 
+                        colorScheme='teal' 
+                        mr='2'
+                        onClick={() => openEditModal(row.original)}
+                        >
                           Edit
                         </Button>
                         <Button colorScheme='red'>
@@ -183,6 +200,11 @@ import {
           })}
         </Tbody>
       </Table>
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        rowData={selectedRowData}
+      />
     </Card>
     );
   }
