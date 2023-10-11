@@ -96,11 +96,12 @@ function SignIn() {
       SetPassword("");
       history.push("/admin/default");
     } catch (err) {
-      if (!err?.status) {
+      console.log(err)
+      if (!err?.originalStatus) {
         handleLoginError("No Server Response");
-      } else if (err.status === 400) {
+      } else if (err.originalStatus === 400) {
         handleLoginError("Check Username or Password");
-      } else if (err.status === 401) {
+      } else if (err.originalStatus === 401) {
         handleLoginError("Unauthorized");
       } else {
         handleLoginError("Login Failed");
