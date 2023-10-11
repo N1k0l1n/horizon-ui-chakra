@@ -3,10 +3,14 @@ export const usersDataTable = [
     Header: "FIRST NAME",
     accessor: "first name",
   },
+  {
+    Header: "LAST NAME",
+    accessor: "last name",
+  },
   
   {
     Header: "USER NAME",
-    accessor: "last name",
+    accessor: "user name",
   },
   {
     Header: "EMAIL",
@@ -23,6 +27,10 @@ export const usersDataTable = [
  
   {
     Header: "ADDRESS",
+    accessor: "address",
+  },
+  {
+    Header: "PHONE NUMBER",
     accessor: "phone number",
   },
   {

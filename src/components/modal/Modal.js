@@ -50,6 +50,17 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
             />
 
             <Input
+              value={selectedRowData?.lastName || ""}
+              onChange={(e) =>
+                setEditedUserData({
+                  ...editedUserData,
+                  lastName: e.target.value,
+                })
+              }
+              placeholder="LAST NAME"
+            />
+
+            <Input
               value={selectedRowData?.userName || ""}
               onChange={(e) =>
                 setEditedUserData({
@@ -106,6 +117,16 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
                 })
               }
               placeholder="ADDRESS"
+            />
+            <Input
+              value={selectedRowData?.phoneNumber || ""}
+              onChange={(e) =>
+                setEditedUserData({
+                  ...editedUserData,
+                  phoneNumber: e.target.value,
+                })
+              }
+              placeholder="PHONE NUMBER"
             />
           </Grid>
         </ModalBody>
