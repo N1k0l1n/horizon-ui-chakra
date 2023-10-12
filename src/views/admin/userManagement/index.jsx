@@ -31,7 +31,7 @@ import {
   usersDataTable,
 } from "views/admin/userManagement/variables/usersColumnData";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUsers } from "../../../features/users/usersSlice"; // Import your fetchUsers action
+import { fetchUsers } from "../../../features/users/usersSlice";
 
 
 export default function UserReports() {
@@ -44,7 +44,6 @@ export default function UserReports() {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  console.log("UserList", userList);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

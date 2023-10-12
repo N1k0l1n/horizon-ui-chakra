@@ -1,18 +1,72 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-  usersList: [], // Initialize an empty array to hold the list of users
+  usersList: [],
   status: "idle",
   error: null,
 };
 
-// Create an async thunk to fetch the user list
+const userApiBaseUrl = "https://localhost:7191/api/User";
+
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   try {
-    // Make an API request to get the list of users
-    const response = await fetch("https://localhost:7191/api/User/GetUsers");
+    const response = await fetch(`${userApiBaseUrl}/GetUsers`);
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Failed to fetch users");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const deleteUserById = createAsyncThunk("users/deleteUser", async (id) => {
+  try {
+    const response = await fetch(`${userApiBaseUrl}/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete user");
+    }
+    return id;
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Create an async thunk to add a new user
+export const addUserAsync = createAsyncThunk("users/addUser", async (user) => {
+  try {
+    const response = await fetch(`${userApiBaseUrl}/AddUser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to add user");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Create an async thunk to edit an existing user
+export const editUserAsync = createAsyncThunk("users/editUser", async (user) => {
+  try {
+    const response = await fetch(`${userApiBaseUrl}/EditUser/${user.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to edit user");
     }
     const data = await response.json();
     return data;
@@ -24,23 +78,7 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
 const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {
-    addUser: (state, action) => {
-      state.usersList.push(action.payload);
-    },
-    editUser: (state, action) => {
-      const { id, name, email } = action.payload;
-      const existingUser = state.usersList.find((user) => user.id === id);
-      if (existingUser) {
-        existingUser.name = name;
-        existingUser.email = email;
-      }
-    },
-    deleteUser: (state, action) => {
-      const { id } = action.payload;
-      state.usersList = state.usersList.filter((user) => user.id !== id);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -53,10 +91,38 @@ const userSlice = createSlice({
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(deleteUserById.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteUserById.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.usersList = state.usersList.filter((user) => user.id !== action.payload);
+      })
+      .addCase(deleteUserById.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(addUserAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.usersList.push(action.payload);
+      })
+      .addCase(addUserAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(editUserAsync.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const userIndex = state.usersList.findIndex((user) => user.id === action.payload.id);
+        if (userIndex !== -1) {
+          state.usersList[userIndex] = action.payload;
+        }
+      })
+      .addCase(editUserAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
-
-export const { addUser, editUser, deleteUser } = userSlice.actions;
 
 export default userSlice.reducer;

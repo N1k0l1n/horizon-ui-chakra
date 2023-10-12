@@ -1,7 +1,6 @@
 import {
   Flex,
   Table,
-  Checkbox,
   Tbody,
   Td,
   Text,
@@ -18,6 +17,8 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
+import { useDispatch } from "react-redux";
+import { deleteUserById, addUserAsync } from "../../../../features/users/usersSlice";
 
 // Custom components
 import Card from "components/card/Card";
@@ -30,14 +31,33 @@ export default function CheckTable(props) {
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
+  //Actions
+  const dispatch = useDispatch();
+  const handleDelete = (userId) => {
+    // Dispatch the deleteUser action with the user's ID
+    dispatch(deleteUserById(userId));
+  };
+
+  const handleAdd = (user) => {
+    // Dispatch the addUserAsync action with the user's data
+    dispatch(addUserAsync(user));
+    setAddModalOpen(false); // Close the modal after adding the user
+  };
+
   // Define modal state
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
 
-  //Open modal
+  //Open Edit modal
   const openEditModal = (rowData) => {
     setSelectedRowData(rowData);
     setEditModalOpen(true);
+  };
+
+  //Open Add Modal
+  const openAddModal = () => {
+    setAddModalOpen(true);
   };
 
   const tableInstance = useTable(
@@ -78,7 +98,12 @@ export default function CheckTable(props) {
         >
           Users Table
         </Text>
-        <Menu />
+        <Button
+          colorScheme="blue"
+          onClick={openAddModal}
+        >
+          +
+        </Button>
       </Flex>
       <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
         <Thead>
@@ -114,11 +139,6 @@ export default function CheckTable(props) {
                   if (cell.column.Header === "FIRST NAME") {
                     data = (
                       <Flex align="center">
-                        <Checkbox
-                          defaultChecked={cell.value}
-                          colorScheme="brandScheme"
-                          me="10px"
-                        />
                         <Text color={textColor} fontSize="sm" fontWeight="700">
                           {cell.value}
                         </Text>
@@ -191,7 +211,12 @@ export default function CheckTable(props) {
                         >
                           Edit
                         </Button>
-                        <Button colorScheme="red">Delete</Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => handleDelete(row.original.id)}
+                        >
+                          Delete
+                        </Button>
                       </Flex>
                     );
                   }
@@ -213,10 +238,17 @@ export default function CheckTable(props) {
           })}
         </Tbody>
       </Table>
+      {/* Edit Modal */}
       <Modal
         isOpen={isEditModalOpen}
         onClose={() => setEditModalOpen(false)}
         rowData={selectedRowData}
+      />
+      {/* Add User Modal */}
+       <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onAdd={handleAdd}
       />
     </Card>
   );
