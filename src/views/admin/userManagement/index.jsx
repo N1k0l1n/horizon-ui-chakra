@@ -25,19 +25,31 @@ import {
   Box,
   SimpleGrid,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import UserTable from "views/admin/userManagement/components/UserTable";
 import {
   usersDataTable,
 } from "views/admin/userManagement/variables/usersColumnData";
-import tableUserData from "views/admin/userManagement/variables/tableUserData.json";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsers } from "../../../features/users/usersSlice"; // Import your fetchUsers action
+
 
 export default function UserReports() {
-  // Chakra Color Mode
+ 
+  const dispatch = useDispatch();
+  const userList = useSelector((state) => state.users.usersList);
+
+  useEffect(() => {
+    // Fetch user data when the component mounts
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  console.log("UserList", userList);
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
-        <UserTable columnsData={usersDataTable} tableData={tableUserData} />
+        <UserTable columnsData={usersDataTable} tableData={userList || []} />
       </SimpleGrid>
     </Box>
   );

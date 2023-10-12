@@ -1,16 +1,16 @@
 export const usersDataTable = [
   {
     Header: "FIRST NAME",
-    accessor: "first name",
+    accessor: "firstName",
   },
   {
     Header: "LAST NAME",
-    accessor: "last name",
+    accessor: "lastName",
   },
   
   {
     Header: "USER NAME",
-    accessor: "user name",
+    accessor: "username",
   },
   {
     Header: "EMAIL",
@@ -18,20 +18,15 @@ export const usersDataTable = [
   },
   {
     Header: "USER ROLE",
-    accessor: "user role",
+    accessor: "role",
   },
-  {
-    Header: "STATUS",
-    accessor: "status",
-  },
- 
   {
     Header: "ADDRESS",
     accessor: "address",
   },
   {
     Header: "PHONE NUMBER",
-    accessor: "phone number",
+    accessor: "phoneNumber",
   },
   {
     Header: "ACTIONS",
