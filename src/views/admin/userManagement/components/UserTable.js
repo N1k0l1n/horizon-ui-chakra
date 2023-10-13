@@ -8,6 +8,7 @@ import {
   Thead,
   Tr,
   Button,
+  Modal,
   useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useMemo, useState } from "react";
@@ -18,12 +19,15 @@ import {
   useTable,
 } from "react-table";
 import { useDispatch } from "react-redux";
-import { deleteUserById, addUserAsync } from "../../../../features/users/usersSlice";
+import {
+  deleteUserById,
+  addUserAsync,
+  editUserAsync,
+} from "../../../../features/users/usersSlice";
 
 // Custom components
 import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
-import Modal from "components/modal/Modal";
+import CustomModal from "components/modal/CustomModal";
 
 export default function CheckTable(props) {
   const { columnsData, tableData } = props;
@@ -33,15 +37,32 @@ export default function CheckTable(props) {
 
   //Actions
   const dispatch = useDispatch();
+
   const handleDelete = (userId) => {
     // Dispatch the deleteUser action with the user's ID
     dispatch(deleteUserById(userId));
   };
 
+  const handleEdit = (user) => {
+    dispatch(editUserAsync(user))
+      .then(() => {
+        setEditModalOpen(false); // Close the modal after editing the user
+        window.location.reload(); // Reload the entire page
+      })
+      .catch((error) => {
+        console.error("Error editing user:", error);
+      });
+  };
+
   const handleAdd = (user) => {
-    // Dispatch the addUserAsync action with the user's data
-    dispatch(addUserAsync(user));
-    setAddModalOpen(false); // Close the modal after adding the user
+    dispatch(addUserAsync(user))
+      .then(() => {
+        setAddModalOpen(false); // Close the modal after adding the user
+        window.location.reload(); // Reload the entire page
+      })
+      .catch((error) => {
+        console.error("Error adding user:", error);
+      });
   };
 
   // Define modal state
@@ -56,7 +77,7 @@ export default function CheckTable(props) {
   };
 
   //Open Add Modal
-  const openAddModal = () => {
+  const openAddModal = (rowData) => {
     setAddModalOpen(true);
   };
 
@@ -85,9 +106,11 @@ export default function CheckTable(props) {
   return (
     <Card
       direction="column"
-      w="200%"
+      w="100%"
+      minW="1500px"
+      minH="200px" // Set a minimum height here
       px="0px"
-      overflowX={{ sm: "scroll", lg: "hidden" }}
+      overflowX={{ sm: "scroll", lg: "auto" }}
     >
       <Flex px="25px" justify="space-between" align="center">
         <Text
@@ -98,10 +121,7 @@ export default function CheckTable(props) {
         >
           Users Table
         </Text>
-        <Button
-          colorScheme="blue"
-          onClick={openAddModal}
-        >
+        <Button colorScheme="blue" onClick={openAddModal}>
           +
         </Button>
       </Flex>
@@ -239,17 +259,23 @@ export default function CheckTable(props) {
         </Tbody>
       </Table>
       {/* Edit Modal */}
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        rowData={selectedRowData}
-      />
+      <Modal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
+        <CustomModal
+          isOpen={isEditModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          selectedRowData={selectedRowData}
+          onSave={handleEdit}
+        />
+      </Modal>
       {/* Add User Modal */}
-       <Modal
-        isOpen={isAddModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onAdd={handleAdd}
-      />
+      <Modal isOpen={isAddModalOpen} onClose={() => setAddModalOpen(false)}>
+        <CustomModal
+          isOpen={isAddModalOpen}
+          onClose={() => setAddModalOpen(false)}
+          selectedRowData={null}
+          onSave={handleAdd}
+        />
+      </Modal>
     </Card>
   );
 }

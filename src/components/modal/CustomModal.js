@@ -39,40 +39,41 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
           <Text>Please fill the above Fields</Text>
           <Grid gridTemplateColumns="1fr 1fr" gap="3">
             <Input
-              value={selectedRowData?.firstName || ""}
-              onChange={(e) =>
+              value={editedUserData?.firstName || ""}
+              onChange={(e) => {
                 setEditedUserData({
                   ...editedUserData,
                   firstName: e.target.value,
-                })
-              }
+                });
+              }}
               placeholder="FIRST NAME"
+              autoFocus
             />
 
             <Input
-              value={selectedRowData?.lastName || ""}
-              onChange={(e) =>
+              value={editedUserData?.lastName || ""}
+              onChange={(e) =>{
                 setEditedUserData({
                   ...editedUserData,
                   lastName: e.target.value,
                 })
-              }
+              }}
               placeholder="LAST NAME"
             />
 
             <Input
-              value={selectedRowData?.userName || ""}
-              onChange={(e) =>
+              value={editedUserData?.username || ""}
+              onChange={(e) => {
                 setEditedUserData({
                   ...editedUserData,
-                  userName: e.target.value,
+                  username: e.target.value,
                 })
-              }
+              }}
               placeholder="USER NAME"
             />
 
             <Input
-              value={selectedRowData?.email || ""}
+              value={editedUserData?.email || ""}
               onChange={(e) =>
                 setEditedUserData({
                   ...editedUserData,
@@ -83,14 +84,13 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
             />
 
             <Select
-              value={selectedRowData?.userRole || ""}
+              value={editedUserData?.role || ""}
               onChange={(e) =>
                 setEditedUserData({
                   ...editedUserData,
                   userRole: e.target.value,
                 })
               }
-              placeholder="Select option"
             >
               <option value="Admin">Admin</option>
               <option value="Member">Member</option>
@@ -98,18 +98,7 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
             </Select>
 
             <Input
-              value={selectedRowData?.status || ""}
-              onChange={(e) =>
-                setEditedUserData({
-                  ...editedUserData,
-                  status: e.target.value,
-                })
-              }
-              placeholder="STATUS"
-            />
-
-            <Input
-              value={selectedRowData?.address || ""}
+              value={editedUserData?.address || ""}
               onChange={(e) =>
                 setEditedUserData({
                   ...editedUserData,
@@ -119,7 +108,7 @@ const CustomModal = ({ isOpen, onClose, selectedRowData, onSave }) => {
               placeholder="ADDRESS"
             />
             <Input
-              value={selectedRowData?.phoneNumber || ""}
+              value={editedUserData?.phoneNumber || ""}
               onChange={(e) =>
                 setEditedUserData({
                   ...editedUserData,

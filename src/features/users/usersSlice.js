@@ -58,7 +58,7 @@ export const addUserAsync = createAsyncThunk("users/addUser", async (user) => {
 // Create an async thunk to edit an existing user
 export const editUserAsync = createAsyncThunk("users/editUser", async (user) => {
   try {
-    const response = await fetch(`${userApiBaseUrl}/EditUser/${user.id}`, {
+    const response = await fetch(`${userApiBaseUrl}/UpdateUser/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
